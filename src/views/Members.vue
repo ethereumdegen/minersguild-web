@@ -138,11 +138,11 @@ export default {
  
 
   },
-  mounted: function () {
+  mounted: async function () {
     
-        this.fetchGuildBalances()
-       this.fetchReserveBalances()
-       this.fetchDonations()
+      await this.fetchGuildBalances()
+      await this.fetchReserveBalances()
+      await this.fetchDonations()
   }, 
   methods: {
           async fetchGuildBalances(){
