@@ -21,11 +21,7 @@
        <div class="w-column">
           <div class="text-lg font-bold"> Guild Members  </div>
           
-         
-
-          <div  class=" "  >
-
-             
+          
             
           <div class="text-xs">
             <ThiccTable 
@@ -36,8 +32,18 @@
           </div>
 
 
+          <div class="mt-16"> </div> 
+           <div class="text-lg font-bold"> Sponsors  </div> 
+          
+            
+          <div class="text-xs">
+            <GenericTable 
+              v-bind:labelsArray="[' ','donation']"
+              v-bind:rowsArray="donationRowsArray"
+              v-bind:clickedRowCallback="onClickedRow"
+            />
           </div>
-
+ 
 
           
        </div>
@@ -69,6 +75,8 @@ import Navbar from './components/Navbar.vue';
  
 import Footer from './components/Footer.vue';
 import TabsBar from './components/TabsBar.vue';
+import GenericTable from './components/GenericTable.vue';
+ 
 import ThiccTable from './components/ThiccTable.vue';
  
 
@@ -81,13 +89,14 @@ import FrontendHelper from '../js/frontend-helper.js'
 export default {
   name: 'Members',
   props: [],
-  components: {Navbar, Footer, TabsBar, ThiccTable, NotConnectedToWeb3},
+  components: {Navbar, Footer, TabsBar, GenericTable, ThiccTable, NotConnectedToWeb3},
   data() {
     return {
       web3Plug: new Web3Plug() , 
       activePanelId: null,
       selectedTab:"bids",
       shareRowsArray:[],
+      donationRowsArray:[],
 
        
       connectedToWeb3: false,
@@ -124,7 +133,8 @@ export default {
   mounted: function () {
     
       
-      this.fetchReserveBalances()
+       this.fetchReserveBalances()
+       this.fetchDonations()
   }, 
   methods: {
            async fetchReserveBalances(){
@@ -135,6 +145,7 @@ export default {
             console.log('results',results)
             
             let balances = results.output 
+
 
             this.shareRowsArray = [] 
 
@@ -148,6 +159,34 @@ export default {
           this.shareRowsArray.sort( (a, b) => b.amount - a.amount )
 
           },
+            async fetchDonations(){
+
+            let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+            let inputData = {requestType: 'ERC20_transferred_to', input: { to:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
+            let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
+            console.log('results',results)
+            
+
+            let _0xBTCAddress = '0xb6ed7644c69416d67b522e20bc294a9a9b405b31'.toLowerCase()
+
+
+            let donations = results.output 
+
+            let addressesWithReserve = this.shareRowsArray.map(r => r.accountAddress )
+
+            this.donationRowsArray = [] 
+
+            for(let donation of donations){
+               if(donation.amount > 0 && donation.contractAddress.toLowerCase() == _0xBTCAddress && !addressesWithReserve.includes(donation.from)){
+                this.donationRowsArray.push({from: donation.from, amount: MathHelper.rawAmountToFormatted(donation.amount,8), token: donation.contractAddress   })
+           
+               }
+              }
+
+          this.donationRowsArray.sort( (a, b) => b.amount - a.amount )
+          console.log('this.donationRowsArray',this.donationRowsArray)
+          },
+
           onClickedRow(row){
              
 
