@@ -23,7 +23,7 @@ export default class MathHelper {
 
   static rawAmountToFormatted(amount,decimals)
   {
-    return (amount * Math.pow(10,-1 * decimals)).toFixed(decimals);
+    return parseFloat((amount * Math.pow(10,-1 * decimals)).toFixed(decimals));
   }
 
   static formattedAmountToRaw(amountFormatted,decimals)

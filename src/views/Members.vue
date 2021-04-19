@@ -19,13 +19,21 @@
      <div class="py-16 w-container">
         
        <div class="w-column">
+
+         <div class="text-center">
+           Total Guild Balance: {{getFormattedGuildBalance()}} 0xBTC
+
+         </div>
+
+         <div class="mt-8"> </div> 
+
           <div class="text-lg font-bold"> Guild Members  </div>
           
           
             
           <div class="text-xs">
             <ThiccTable 
-              v-bind:labelsArray="[' ','shares']"
+              v-bind:labelsArray="[' ','shares', 'balance']"
               v-bind:rowsArray="shareRowsArray"
               v-bind:clickedRowCallback="onClickedRow"
             />
@@ -69,7 +77,7 @@ import NotConnectedToWeb3 from './components/NotConnectedToWeb3.vue'
 
 import Web3Plug from '../js/web3-plug.js'  
 
- 
+import web3utils from 'web3-utils' 
 
 import Navbar from './components/Navbar.vue';
  
@@ -83,8 +91,7 @@ import ThiccTable from './components/ThiccTable.vue';
 import MathHelper from '../js/math-helper.js'
 
 import StarflaskAPIHelper from '../js/starflask-api-helper.js'
-
-import FrontendHelper from '../js/frontend-helper.js'
+ 
 
 export default {
   name: 'Members',
@@ -98,6 +105,7 @@ export default {
       shareRowsArray:[],
       donationRowsArray:[],
 
+      guildBalances: {},
        
       connectedToWeb3: false,
       currentBlockNumber: 0
@@ -132,11 +140,34 @@ export default {
   },
   mounted: function () {
     
-      
+        this.fetchGuildBalances()
        this.fetchReserveBalances()
        this.fetchDonations()
   }, 
   methods: {
+          async fetchGuildBalances(){
+
+            let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+            let inputData = {requestType: 'ERC20_balance_by_owner', input: { account:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
+            let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
+            console.log('results',results)
+            
+            let balances = results.output 
+
+
+            this.guildBalances = {}
+
+            for(let balance of balances){
+               if(balance.amount > 0){
+                 this.guildBalances[balance.contractAddress] = balance.amount
+                
+               }
+              }
+
+          //this.guildBalances.sort( (a, b) => b.amount - a.amount )
+                console.log('guild balances', this.guildBalances)
+              this.$forceUpdate()
+          },
            async fetchReserveBalances(){
 
             let apiURI = 'https://api.starflask.com/api/v1/testapikey'
@@ -146,12 +177,34 @@ export default {
             
             let balances = results.output 
 
+            let totalShares = 0
+
+            for(let balance of balances){
+              if(balance.amount > 0){
+
+              totalShares += balance.amount 
+              }
+            }
+          
+
+            console.log('totalShares',totalShares)
+
+            let primaryTokenAddress = web3utils.toChecksumAddress('0xb6ed7644c69416d67b522e20bc294a9a9b405b31')
+
+            let primaryGuildBalance = this.guildBalances[primaryTokenAddress]
 
             this.shareRowsArray = [] 
 
             for(let balance of balances){
                if(balance.amount > 0){
-                this.shareRowsArray.push({accountAddress: balance.accountAddress,  amount: MathHelper.rawAmountToFormatted(balance.amount,8)   })
+
+                 let balanceFromShare = parseFloat( primaryGuildBalance * (balance.amount/totalShares)) 
+
+                this.shareRowsArray.push(
+                  {accountAddress: balance.accountAddress,  
+                  amount: MathHelper.rawAmountToFormatted(balance.amount,8) ,
+                  balanceFromShare: MathHelper.rawAmountToFormatted(balanceFromShare,8)
+                    })
            
                }
               }
@@ -191,6 +244,13 @@ export default {
              
 
             window.location.href = this.web3Plug.getExplorerLinkForAddress(row.accountAddress)
+          },
+
+          getFormattedGuildBalance(){
+            let primaryTokenAddress = web3utils.toChecksumAddress('0xb6ed7644c69416d67b522e20bc294a9a9b405b31')
+
+            let primaryBalance = this.guildBalances[primaryTokenAddress]
+            return parseFloat( MathHelper.rawAmountToFormatted(primaryBalance,8) )
           }
   }
 }
