@@ -7,6 +7,7 @@ const config={
       {"title":"Stake","url":"/stake"} ,
       {"title":"Unstake","url":"/unstake"} ,
       {"title":"Contribute","url":"/contribute"}  ,
+      {"title":"Give","url":"/give"}  ,
     ]}  
   ]
 
