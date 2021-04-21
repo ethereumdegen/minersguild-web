@@ -182,7 +182,7 @@ export default {
         let accountAddress = this.web3Plug.getActiveAccountAddress()
 
       let chainId = this.web3Plug.getActiveNetId()
-
+        if(!chainId) chainId = 1;
 
        let stakedTokenContractAddress = this.web3Plug.getContractDataForNetworkID(chainId)['0xbitcoin'].address
 
