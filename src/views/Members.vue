@@ -241,9 +241,11 @@ export default {
           },
 
           onClickedRow(row){
-             
+              
+             let accountAddress  = row.accountAddress
+             if(!accountAddress) accountAddress= row.from 
 
-            window.location.href = this.web3Plug.getExplorerLinkForAddress(row.accountAddress)
+            window.location.href = this.web3Plug.getExplorerLinkForAddress(accountAddress)
           },
 
           getFormattedGuildBalance(){
