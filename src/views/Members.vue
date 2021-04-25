@@ -15,10 +15,10 @@
 
   
 
-   <div class="section   border-b-2 border-black text-white" style="background:#222;">
+   <div class="section   border-b-2 border-black text-white " style="background:#222;">
      <div class="py-16 w-container">
         
-       <div class="w-column">
+       <div class="w-column overflow-x-auto">
 
          <div class="text-center">
            Total Guild Balance: {{getFormattedGuildBalance()}} 0xBTC
@@ -39,8 +39,11 @@
             />
           </div>
 
-
+        </div>
           <div class="mt-16"> </div> 
+         <div class="w-column overflow-x-auto">
+
+
            <div class="text-lg font-bold"> Sponsors  </div> 
           
             
@@ -91,7 +94,8 @@ import ThiccTable from './components/ThiccTable.vue';
 import MathHelper from '../js/math-helper.js'
 
 import StarflaskAPIHelper from '../js/starflask-api-helper.js'
- 
+
+const AccountNamesLookup = require('../config/accountNamesLookup.json')
 
 export default {
   name: 'Members',
@@ -231,7 +235,7 @@ export default {
 
             for(let donation of donations){
                if(donation.amount > 0 && donation.contractAddress.toLowerCase() == _0xBTCAddress && !addressesWithReserve.includes(donation.from)){
-                this.donationRowsArray.push({from: donation.from, amount: MathHelper.rawAmountToFormatted(donation.amount,8), token: donation.contractAddress   })
+                this.donationRowsArray.push({name: this.getAccountNameFromAddress(donation.from), amount: MathHelper.rawAmountToFormatted(donation.amount,8), token: donation.contractAddress , from: donation.from  })
            
                }
               }
@@ -253,6 +257,17 @@ export default {
 
             let primaryBalance = this.guildBalances[primaryTokenAddress]
             return parseFloat( MathHelper.rawAmountToFormatted(primaryBalance,8) )
+          },
+
+          getAccountNameFromAddress(address){
+
+            for (let [lookupAddress, formalName] of Object.entries(AccountNamesLookup)) {
+              if (lookupAddress.toLowerCase() == address.toLowerCase()) {
+                return formalName;
+              }
+            }
+
+            return address;
           }
   }
 }
