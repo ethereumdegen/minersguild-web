@@ -8,9 +8,9 @@
             </tr>
           </thead>
           <tbody v-cloak>
-            <tr v-for="row of rowsArray" class="hover:bg-gray-700 cursor-pointer" @click="clickedRow(row)">
+            <tr v-for="row of rowsArray" class="hover:bg-gray-700 cursor-pointer  py-4 rainbow-hover " @click="clickedRow(row)">
                
-              <td v-for="(label, index) in labelsArray" >{{Object.values(row)[index]}}</td>
+              <td v-for="(label, index) in labelsArray"  class="py-2 px-2 my-2 truncate" >{{Object.values(row)[index]}}</td>
               
             </tr>
              
