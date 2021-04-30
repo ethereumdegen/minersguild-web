@@ -10,6 +10,8 @@ import Unstake from './views/Unstake.vue'
   
 import Contribute from './views/Contribute.vue'
 import Give from './views/Give.vue'
+
+import Collection from './views/Collection.vue'
   
 import Members from './views/Members.vue'
  
@@ -55,6 +57,13 @@ export default new Router({
       path: '/give',
       name: 'give',
       component: Give
+    } ,
+
+
+    {
+      path: '/collection',
+      name: 'collection',
+      component: Collection
     } ,
    
     {

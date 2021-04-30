@@ -15,8 +15,10 @@
         <div class="w-1/2 lg:w-1/4 flex flex-col">
           <h3 class=" text-lg font-bold ">Community &amp; Social</h3>
            <a href="https://0xbitcoin.org" target="_blank" class="no-underline text-sm text-gray-200 hover:text-purple-300 inline-block">0xBTC Website</a>
+
+           <a href="/collection"   class="no-underline text-sm text-gray-200 hover:text-purple-300 inline-block">Miners Guild Reserve Collection</a>
          
-         
+          
          </div>
 
 
