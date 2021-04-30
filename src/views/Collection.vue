@@ -28,8 +28,9 @@
          <div class="mt-8"> </div> 
 
           <div v-for="work of collectedWorks" class="m-4 p-4 ">
-             
+            <a v-bind:href="getUrlForIpfsHash(work.ipfsHash)">
             <img v-bind:src="getUrlForIpfsHash(work.ipfsHash)"  width="300px" /> 
+            </a>
           </div>
           
           
