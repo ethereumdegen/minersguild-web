@@ -29,7 +29,23 @@
     }
 
 
+  },
+
+  "matic":{
+    
+    "contracts":{
+      "0xbitcoin":{"name":"0xBTC","address":"0x71b821aa52a49f32eed535fca6eb5aa130085978","decimals":8 },
+ 
+      "guildreserve":{"name":"GuildReserve","address":"0x395fA4Afdb09f54031C5A0e02706AF283B4e5594","decimals":8 },
+ 
+
+      "minersguild":{"address":"0x5b98164b36eE6E9d2C4BC6cC156DE7Ad052838Ed"}
+
+    }
+
+
   }
+
 
 
 }

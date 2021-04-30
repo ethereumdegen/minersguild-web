@@ -55,8 +55,17 @@
 
           </div>
 
-           <div class="py-4" v-if=" connectedToWeb3 && !submitComplete">
-              
+           <div class="py-4" v-if=" connectedToWeb3 && !submitComplete"> 
+             
+                 <div class="  p-4" v-if="!networkSupportsApproveAndCall()">
+                   
+
+                     <div v-if="!hasEnoughAllowance()"  @click="approveClicked" class="select-none bg-green-700 p-2 inline-block rounded hover:bg-green-900 border-gray-800 border-2 cursor-pointer text-white" style=" text-shadow: 1px 1px #222;"> Approve </div>
+               
+                    <label   class="block text-md  text-black inline-block px-2 ">Allowance:   {{tokenAllowanceFormatted}}</label>
+
+               
+                </div> 
  
                  <div class="  p-4">
                      <div @click="depositClicked" class="select-none bg-blue-700 p-2 inline-block rounded hover:bg-blue-900 border-gray-800 border-2 cursor-pointer text-white" style=" text-shadow: 1px 1px #222;"> Deposit </div>
@@ -116,7 +125,11 @@ export default {
   
       formInputs:{},
 
+      tokenBalanceRaw: null,
       tokenBalanceFormatted: null,
+
+      tokenAllowanceRaw: null,
+      tokenAllowanceFormatted: null,
        
       connectedToWeb3: false ,
       submitComplete:false
@@ -160,6 +173,30 @@ export default {
   },
   methods: {
 
+
+    async approveClicked(){
+         console.log('start approve ')
+
+
+      let accountAddress = this.web3Plug.getActiveAccountAddress()
+
+      let chainId = this.web3Plug.getActiveNetId()
+      let guildContractAddress = this.web3Plug.getContractDataForNetworkID(chainId)['minersguild'].address
+
+       let tokenContractAddress = this.web3Plug.getContractDataForNetworkID(chainId)['0xbitcoin'].address
+
+      let currencyDecimals  = 8 
+      let currencyAmountRaw = MathHelper.formattedAmountToRaw(this.formInputs.currencyAmountFormatted,currencyDecimals) 
+ 
+      let tokenContract = this.web3Plug.getTokenContract( tokenContractAddress );
+     
+      
+      
+       let response = await tokenContract.methods.approve(guildContractAddress, currencyAmountRaw ).send({from:  accountAddress })
+      
+
+
+    },
  
     async depositClicked(){
       console.log('start deposit ')
@@ -176,10 +213,16 @@ export default {
       let currencyAmountRaw = MathHelper.formattedAmountToRaw(this.formInputs.currencyAmountFormatted,currencyDecimals) 
  
       let tokenContract = this.web3Plug.getTokenContract( tokenContractAddress );
+     
+      let guildContract  = this.web3Plug.getCustomContract( GuildContractABI , guildContractAddress );
 
     
-
-      let response = await tokenContract.methods.approveAndCall( guildContractAddress, currencyAmountRaw, '0x0' ).send({from:  accountAddress })
+      if(this.networkSupportsApproveAndCall()){
+        let response = await tokenContract.methods.approveAndCall( guildContractAddress, currencyAmountRaw, '0x0' ).send({from:  accountAddress })
+      }else{
+        let response = await guildContract.methods.stakeCurrency( accountAddress, currencyAmountRaw ).send({from:  accountAddress })
+      }
+      
     },
 
 
@@ -190,12 +233,32 @@ export default {
      
       let tokenContractAddress = this.web3Plug.getContractDataForNetworkID(chainId)['0xbitcoin'].address
 
+       let guildContractAddress = this.web3Plug.getContractDataForNetworkID(chainId)['minersguild'].address
 
-      let tokenBalanceRaw = await  this.web3Plug.getTokenBalance(tokenContractAddress, accountAddress)
+      this.tokenBalanceRaw = await  this.web3Plug.getTokenBalance(tokenContractAddress, accountAddress)
 
-      console.log('tokenBalanceRaw', tokenBalanceRaw )
+      this.tokenAllowanceRaw = await  this.web3Plug.getTokenAllowance(tokenContractAddress,guildContractAddress, accountAddress)
 
-      this.tokenBalanceFormatted = parseFloat(   MathHelper.rawAmountToFormatted(tokenBalanceRaw  , 8  ) )
+     // console.log('tokenBalanceRaw', tokenBalanceRaw )
+
+      this.tokenBalanceFormatted = parseFloat(   MathHelper.rawAmountToFormatted(this.tokenBalanceRaw  , 8  ) )
+      this.tokenAllowanceFormatted = parseFloat(   MathHelper.rawAmountToFormatted(this.tokenAllowanceRaw  , 8  ) )
+
+    },
+
+
+    networkSupportsApproveAndCall(){
+
+      let chainId = this.web3Plug.getActiveNetId()
+
+      return (chainId == 1 || chainId == 5)
+    },
+
+    hasEnoughAllowance(){
+      let currencyDecimals = 8
+      let currencyAmountRaw = MathHelper.formattedAmountToRaw(this.formInputs.currencyAmountFormatted,currencyDecimals) 
+ 
+      return (this.tokenAllowanceRaw >= currencyAmountRaw);
     }
           
   }
