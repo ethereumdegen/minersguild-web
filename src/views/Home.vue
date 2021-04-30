@@ -56,7 +56,7 @@
                 <div class="text-2xl text-center"> How It Works </div>
 
                 <ul class=" "> 
-                    <li class="my-4"> 1. Stake 0xBTC in the Miners Guild Contract Pool </li>
+                    <li class="my-4"> 1. Stake 0xBTC in the Guild Contract Pool </li>
                     <li class="my-4" > 2. Neutral Dapps/Contracts donate their fees [in execution flow] to the Pool to earn Community Goodwill </li>
                     <li class="my-4" > 3. Unstake at any time to withdraw <span class="text-purple-300"> your original deposit + accrued donations </span>  </li>
                </ul>
@@ -64,7 +64,7 @@
                 <div class="text-lg text-center my-16 hidden "> TLDR: This is a funnel for donations from community-driven dapps. </div>
 
 
-                <p class="text-gray-500 bg-gray-800 p-4 mt-8"> <img src="@/assets/images/information.png" width="20" class="inline"/> Smart contracts that pay fees into the MinersGuild contract, during execution flow, are more likely to be promoted, supported, and used by the community. </p>
+                <p class="text-gray-500 bg-gray-800 p-4 mt-8"> <img src="@/assets/images/information.png" width="20" class="inline"/> Smart contracts that pay fees into the Guild contract, during execution flow, are more likely to be promoted, supported, and used by the community. </p>
 
          </div>
 

@@ -19,9 +19,9 @@
      <div class="py-16 w-container">
         
        <div class="  px-2 ">
-          <div class="text-lg font-bold mb-4"> Give to the Miners Guild  </div>
+          <div class="text-lg font-bold mb-4"> Give to the Guild  </div>
 
-          <div class="text-sm   mb-8"> Add 0xBTC to the Miners Guild pool, distributing it to members equally  </div>
+          <div class="text-sm   mb-8"> Add 0xBTC to the Guild pool, distributing it to members equally  </div>
            
           <div  class=" " v-if="!connectedToWeb3">
               <NotConnectedToWeb3 />

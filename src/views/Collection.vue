@@ -21,7 +21,7 @@
        <div class="w-column overflow-x-auto">
 
          <div class="text-center">
-          <div class="text-lg">  Miners Guild Reserve Collection </div> 
+          <div class="text-lg">  Guild Reserve Collection </div> 
          
          </div>
 

@@ -19,7 +19,7 @@
      <div class="py-16 w-container">
         
        <div class="  px-2 ">
-          <div class="text-lg font-bold mb-4"> Join the Miners Guild  </div>
+          <div class="text-lg font-bold mb-4"> Join the Guild  </div>
 
           <div class="text-sm   mb-8"> Deposit 0xBTC in the DAO contract to earn 'Guild Reserve tokens'. Guild Reserve tokens can be redeemed back to the contract to withdraw your original deposit plus any fees that the DAO has accrued.   </div>
            
