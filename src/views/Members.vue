@@ -33,7 +33,7 @@
             
           <div class="text-xs">
             <ThiccTable 
-              v-bind:labelsArray="[' ','shares', 'balance']"
+              v-bind:labelsArray="[' ','balance (0xbtc)','share %']"
               v-bind:rowsArray="shareRowsArray"
               v-bind:clickedRowCallback="onClickedRow"
             />
@@ -181,6 +181,8 @@ export default {
             
             let balances = results.output 
 
+            balances.sort((a,b) => {return b.amount - a.amount})
+
             let totalShares = 0
 
             for(let balance of balances){
@@ -198,16 +200,20 @@ export default {
             let primaryGuildBalance = this.guildBalances[primaryTokenAddress]
 
             this.shareRowsArray = [] 
+            
 
             for(let balance of balances){
                if(balance.amount > 0){
+
+                 let sharePercent = parseFloat(balance.amount * 100/totalShares); 
 
                  let balanceFromShare = parseFloat( primaryGuildBalance * (balance.amount/totalShares)) 
 
                 this.shareRowsArray.push(
                   {accountAddress: balance.accountAddress,  
-                  amount: MathHelper.rawAmountToFormatted(balance.amount,8) ,
-                  balanceFromShare: MathHelper.rawAmountToFormatted(balanceFromShare,8)
+                  balanceFromShare: MathHelper.rawAmountToFormatted(balanceFromShare,8),
+                  sharePercent:  sharePercent.toFixed(2)
+                  
                     })
            
                }
