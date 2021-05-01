@@ -26,7 +26,7 @@
   
                 
               <div class="text-lg text-center">
-                ⛏️ The Miners Guild DAO is always accepting of help ⛏️
+                ⛏️ The Guild DAO is always accepting help ⛏️
               </div>
               <div class="text-sm text-center">
                 Here are some ways you can contribute!

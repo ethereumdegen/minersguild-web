@@ -1,8 +1,4 @@
-# 0xBitcoin Compiled Website
+# The Guild 
 
-Deployed at https://0xbitcoin.org
-
-
-### This is the compiled code repo.
-
-Issue pull requests to https://github.com/0xbitcoin/0xbitcoin.github.io
+ 
+ Neutral DAO for the 0xBitcoin community 
