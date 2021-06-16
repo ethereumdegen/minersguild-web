@@ -222,26 +222,80 @@ export default {
           this.shareRowsArray.sort( (a, b) => b.amount - a.amount )
 
           },
-            async fetchDonations(){
+
+
+          async fetchERC20TransferredNet(){
 
             let apiURI = 'https://api.starflask.com/api/v1/testapikey'
             let inputData = {requestType: 'ERC20_transferred_to', input: { to:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
+            let transferredToResults = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
+
+            inputData = {requestType: 'ERC20_transferred_from', input: { from:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
+            let transferredFromResults = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
+
+            let transferredToArray = {}
+            let transferredFromArray = {}
+            let transferredNetArray = {}
+
+            for(let result of transferredToResults.output){
+              let address = result.from
+              transferredToArray[address] = result 
+            }
+
+            for(let result of transferredFromResults.output){
+              let address = result.to
+              transferredFromArray[address] = result 
+            }
+
+            for(let address of Object.keys(transferredToArray)){
+
+              let amountWithdrawn = 0
+
+              if(transferredFromArray[address]){
+                amountWithdrawn = transferredFromArray[address].amount
+              }
+
+              transferredNetArray[address] = {
+                from: transferredToArray[address].from,
+                to: transferredToArray[address].to,
+                contractAddress: transferredToArray[address].contractAddress,
+                amountSent: transferredToArray[address].amount,
+                amountWithdrawn: amountWithdrawn,
+                amountNet: parseInt(transferredToArray[address].amount) - parseInt(amountWithdrawn )
+
+              }
+               
+            }
+
+            console.log( ' transferredToArray',transferredToArray  )
+
+            return transferredNetArray
+          },
+
+
+            async fetchDonations(){
+
+            /*let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+            let inputData = {requestType: 'ERC20_transferred_to', input: { to:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
+            console.log('results',results)*/
+
+            let results = await this.fetchERC20TransferredNet()
             console.log('results',results)
             
 
             let _0xBTCAddress = '0xb6ed7644c69416d67b522e20bc294a9a9b405b31'.toLowerCase()
 
 
-            let donations = results.output 
+            let donations = Object.values( results )
 
             let addressesWithReserve = this.shareRowsArray.map(r => r.accountAddress )
 
             this.donationRowsArray = [] 
 
             for(let donation of donations){
-               if(donation.amount > 0 && donation.contractAddress.toLowerCase() == _0xBTCAddress && !addressesWithReserve.includes(donation.from)){
-                this.donationRowsArray.push({name: this.getAccountNameFromAddress(donation.from), amount: MathHelper.rawAmountToFormatted(donation.amount,8), token: donation.contractAddress , from: donation.from  })
+               if(donation.amountNet > 0 && donation.contractAddress.toLowerCase() == _0xBTCAddress && !addressesWithReserve.includes(donation.from)){
+                this.donationRowsArray.push({name: this.getAccountNameFromAddress(donation.from), amount: MathHelper.rawAmountToFormatted(donation.amountNet,8), token: donation.contractAddress , from: donation.from  })
            
                }
               }
