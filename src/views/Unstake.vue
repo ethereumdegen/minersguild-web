@@ -57,10 +57,13 @@
 
 
               
-           <div class="mb-4 ">
-              <label   class="block text-md font-medium font-bold text-gray-800  ">Shares Withdraw Amount</label>
-
-              <div class="flex flex-row">
+           <div class="mb-4 block">
+             <div class="flex flex-row"> 
+                <label   class="  text-md font-medium font-bold text-gray-800  inline ">Shares Withdraw Amount</label>
+                <label @click="setMax()"  class="  text-md font-medium  select-none text-blue-400 hover:text-blue-500 cursor-pointer inline mx-4 ">max</label>
+                
+               </div> 
+              <div class="flex flex-col">
               <div class="w-1/2 ">
                     <input type="number"   v-model="formInputs.currencyAmountFormatted"  class="text-gray-900 border-2 border-black font-bold px-4 text-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full py-4 pl-7 pr-12   border-gray-300 rounded-md" placeholder="0.00">
                 </div> 
@@ -69,6 +72,9 @@
            
             </div>
 
+             <div class="mb-4 block" v-if="formInputs.currencyAmountFormatted && formInputs.currencyAmountFormatted>0">
+               You will receive: {{  getEstimatedOutput(formInputs.currencyAmountFormatted)  }} 0xBTC
+              </div>
  
 
 
@@ -213,8 +219,30 @@ export default {
       this.sharesBalance =  MathHelper.rawAmountToFormatted(sharesBalanceRaw,currencyDecimals) 
       this.expectedOutput =  MathHelper.rawAmountToFormatted(expectedOutputRaw,currencyDecimals) 
 
+
+
       }
 
+
+    },
+
+    setMax(){
+      console.log('set max', this.sharesBalance)
+       this.formInputs.currencyAmountFormatted =  this.sharesBalance 
+
+       this.$forceUpdate()
+    },
+
+
+      getEstimatedOutput( amountFormatted ){
+
+      let currencyDecimals = 8
+
+      let rawInput =  MathHelper.formattedAmountToRaw(amountFormatted,currencyDecimals) 
+
+       let ratio =   this.expectedOutput/  this.sharesBalance 
+
+      return MathHelper.rawAmountToFormatted ( rawInput * ratio , 8 )
 
     },
  
