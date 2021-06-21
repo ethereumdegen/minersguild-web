@@ -177,7 +177,7 @@ export default {
             let apiURI = 'https://api.starflask.com/api/v1/testapikey'
             let inputData = {requestType: 'ERC20_balance_by_token', input: { token:'0x657223e3fdf539d92c40664db340097d5d6bd9f5' } } 
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
-            console.log('results',results)
+            console.log('ERC20_balance_by_token results',results)
             
             let balances = results.output 
 

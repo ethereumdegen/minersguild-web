@@ -124,6 +124,8 @@ import GenericDropdown from './components/GenericDropdown.vue';
   
 const GuildContractABI = require('../contracts/MinersGuild.json')
 
+import web3utils from 'web3-utils'
+
 import FrontendHelper from '../js/frontend-helper.js'
 
 export default {
@@ -197,6 +199,12 @@ export default {
       let tokenContract = this.web3Plug.getTokenContract( tokenContractAddress );
       let guildContract = this.web3Plug.getCustomContract( GuildContractABI,guildContractAddress );
 
+
+      if(accountAddress &&  web3utils.isAddress(accountAddress)  ){
+        
+      
+
+
       let currencyDecimals = 8
       let sharesBalanceRaw = await tokenContract.methods.balanceOf( accountAddress ).call()
 
@@ -205,7 +213,7 @@ export default {
       this.sharesBalance =  MathHelper.rawAmountToFormatted(sharesBalanceRaw,currencyDecimals) 
       this.expectedOutput =  MathHelper.rawAmountToFormatted(expectedOutputRaw,currencyDecimals) 
 
-
+      }
 
 
     },
