@@ -132,7 +132,8 @@ const GuildContractABI = require('../contracts/MinersGuild.json')
 
 import web3utils from 'web3-utils'
 
-import FrontendHelper from '../js/frontend-helper.js'
+
+var balanceInterval
 
 export default {
   name: 'Stake',
@@ -182,6 +183,8 @@ export default {
     let chainId = this.web3Plug.getActiveNetId()
      
     this.updateBalances()
+
+    balanceInterval = setInterval(this.updateBalances,8000)
     
   }, 
   methods: {
