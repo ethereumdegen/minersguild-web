@@ -65,7 +65,7 @@
                </div> 
               <div class="flex flex-col">
               <div class="w-1/2 ">
-                    <input type="number"   v-model="formInputs.currencyAmountFormatted"  class="text-gray-900 border-2 border-black font-bold px-4 text-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full py-4 pl-7 pr-12   border-gray-300 rounded-md" placeholder="0.00">
+                    <input type="number"   v-model="formInputs.currencyAmountFormatted" v-on:blur="recalculateOutput()" class="text-gray-900 border-2 border-black font-bold px-4 text-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full py-4 pl-7 pr-12   border-gray-300 rounded-md" placeholder="0.00">
                 </div> 
                  
               </div>
@@ -234,15 +234,36 @@ export default {
     },
 
 
+    recalculateOutput(){
+
+      this.$forceUpdate()
+    },
+
+
       getEstimatedOutput( amountFormatted ){
 
       let currencyDecimals = 8
 
       let rawInput =  MathHelper.formattedAmountToRaw(amountFormatted,currencyDecimals) 
 
-       let ratio =   this.expectedOutput/  this.sharesBalance 
+      
 
-      return MathHelper.rawAmountToFormatted ( rawInput * ratio , 8 )
+       let ratio =   this.expectedOutput / this.sharesBalance 
+
+   
+ 
+
+        let rawOutput = rawInput * ratio
+
+        console.log('rawOutput',rawOutput , this.expectedOutput )
+       
+
+        let formattedOutput = MathHelper.rawAmountToFormatted ( rawOutput , 8 )
+         if(formattedOutput >  this.expectedOutput){
+          formattedOutput =  this.expectedOutput
+        }
+
+      return formattedOutput
 
     },
  
