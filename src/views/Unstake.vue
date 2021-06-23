@@ -162,7 +162,7 @@ export default {
         this.activeNetworkId = connectionState.activeNetworkId
         this.connectedToWeb3 = this.web3Plug.connectedToWeb3()
         
-         
+            this.updateBalances()
          
       }.bind(this));
    this.web3Plug.getPlugEventEmitter().on('error', function(errormessage) {
