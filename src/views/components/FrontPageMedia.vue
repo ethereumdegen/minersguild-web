@@ -24,6 +24,17 @@
                     
               </a> 
               </div> 
+
+                  <div class="my-4 inline-block" >
+
+                  <a class="border-2 border-gray-500 p-2 hover:bg-gray-600" href="https://0xstats.0xbtc.io" target="_blank" > 
+                    <img src="@/assets/images/0xstats.png" class="inline-block" width="24px" />
+                    <div class="inline-block ml-2 text-white ">0xStats NFT</div>
+                    
+                    
+              </a> 
+              </div> 
+
  
                 
            </div> 
