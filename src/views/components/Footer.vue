@@ -18,6 +18,9 @@
 
            <a href="/collection"   class="no-underline text-sm text-gray-200 hover:text-purple-300 inline-block"> Guild Reserve Collection</a>
          
+         <a href="https://snapshot.org/#/0xbtcvault.eth"   class="no-underline text-sm text-gray-200 hover:text-purple-300 inline-block"> Vote on Snapshot.org</a>
+         
+
           
          </div>
 
