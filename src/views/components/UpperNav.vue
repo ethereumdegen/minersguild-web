@@ -13,7 +13,7 @@
         }"
       >
         <button
-          class="flex text-md  p-2 m-1 mx-2 text-gray-900 items-center pr-3 bg-transparent focus:outline-none focus:shadow-solid transition duration-150 ease-in-out border-2 border-gray-200"
+          class="flex text-md  p-2 m-1 mx-2 text-gray-300 items-center pr-3 bg-transparent focus:outline-none focus:shadow-solid transition duration-150 ease-in-out border-2 border-gray-200"
           :class="{ 'border-gray-300 bg-gray-500 text-white ': isShown }"
           aria-label="User menu"
           aria-haspopup="true"
@@ -45,14 +45,13 @@
       </div>
     </t-dropdown>
 
-
-
+ 
 
   </div>
 
 
       <div class="inline-block">
-        <div v-if="web3Plug.connectedToWeb3() == false" @click="connectToWeb3" class="button bg-blue-500 hover:bg-blue-700 text-sm text-black font-bold my-2 py-1 px-2 rounded cursor-pointer">Login with Web3</div>
+        <div v-if="web3Plug.connectedToWeb3() == false" @click="connectToWeb3" class="button bg-white hover:bg-blue-200 text-sm text-black font-bold my-2 py-1 px-2 rounded cursor-pointer">  <img src="@/assets/images/ETH_1027.svg" width="22px" class="inline" /> Login  </div>
 
         <div v-if="web3Plug.connectedToWeb3() "   class="truncate  text-gray-800 p-2" style="max-width:250px;  ">
 
@@ -62,7 +61,7 @@
          />
 
           <span class="  " style="max-width:120px">
-          <a   v-bind:href="getEtherscanBaseURL()+'/address/'+web3Plug.getActiveAccountAddress()" class="text-gray-800  "   target="_blank">  {{web3Plug.getActiveAccountAddress()}} </a>
+          <a   v-bind:href="getEtherscanBaseURL()+'/address/'+web3Plug.getActiveAccountAddress()" class="text-gray-400  "   target="_blank">  {{web3Plug.getActiveAccountAddress()}} </a>
          </span>
          </div>
       </div>

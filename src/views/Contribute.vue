@@ -1,17 +1,8 @@
 <template>
 
-<div>
+<PrimaryLayout>
 
-   <div class="section  bg-gray-200  border-b-2 border-black px-0 lg:px-1">
-
-     <div class=" ">
-        <Navbar 
-        v-bind:web3Plug="web3Plug" 
-       />
-     </div>
-
-
-   </div>
+    
 
   
 
@@ -66,9 +57,8 @@
 
 
     
-  <Footer/>
 
-</div>
+</PrimaryLayout>
 </template>
 
 
@@ -82,9 +72,8 @@ import Web3Plug from '../js/web3-plug.js'
 
  
 
-import Navbar from './components/Navbar.vue';
- 
-import Footer from './components/Footer.vue';
+import PrimaryLayout from './PrimaryLayout.vue';
+  
 import TabsBar from './components/TabsBar.vue';
 import GenericTable from './components/GenericTable.vue';
  
@@ -98,7 +87,7 @@ import FrontendHelper from '../js/frontend-helper.js'
 export default {
   name: 'Contribute',
   props: [],
-  components: {Navbar, Footer, TabsBar, GenericTable, NotConnectedToWeb3},
+  components: {PrimaryLayout, TabsBar, GenericTable, NotConnectedToWeb3},
   data() {
     return {
       web3Plug: new Web3Plug() 

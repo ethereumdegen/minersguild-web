@@ -1,5 +1,5 @@
 <template>
-  <div class="section py-4 text-white h-full" style="background: #1d1e26; min-height: 250px;">
+  <div class="section py-4 text-white h-full bg-neutral-800" style="  min-height: 250px;">
     <div class=" h-full ">
       <div class=" flex lg:flex-row h-full">
          <div class="lg:w-1/4 ">

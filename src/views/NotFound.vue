@@ -1,17 +1,8 @@
 <template>
 
-<div>
+<PrimaryLayout>
 
-   <div class="section  bg-white border-b-2 border-black px-0 lg:px-1">
-
-     <div class=" ">
-        <Navbar 
-        v-bind:web3Plug="web3Plug"
-       />
-     </div>
-
-
-   </div>
+   
 
    
 
@@ -23,14 +14,11 @@
 
           </div>
       </div>
-
-  <Footer/>
-
-    
+ 
 
  
 
-</div>
+</PrimaryLayout>
 </template>
 
 
@@ -41,20 +29,16 @@
 import Web3Plug from '../js/web3-plug.js' 
 
 
-import Navbar from './components/Navbar.vue';
+import PrimaryLayout from './PrimaryLayout.vue';
+  
  
-import Footer from './components/Footer.vue';
-
-import BidPacketHelper from '../js/bidpacket-helper.js'
-
-
 
 
 
 export default {
   name: 'NotFound',
   props: [],
-  components: {Navbar, Footer},
+  components: {PrimaryLayout},
   data() {
     return {
       web3Plug: new Web3Plug() ,

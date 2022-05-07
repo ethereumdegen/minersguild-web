@@ -1,19 +1,8 @@
 <template>
 
-<div>
+<PrimaryLayout>
 
-   <div class="section  bg-gray-200  border-b-4 border-black px-0 lg:px-1">
-
-     <div class=" ">
-        <Navbar 
-        v-bind:web3Plug="web3Plug"
-        
-       />
-     </div>
-
-
-   </div>
-
+  
   
 
    <div class="section  border-b-2 border-black" style="background:#1d1d1d;">
@@ -27,12 +16,17 @@
 
             <div class="hidden text-white text-xl my-4">  Neutral grass-roots organization.  </div> 
 
+
         <div>
-            <router-link to="/stake"  class="select-none no-underline bg-blue-700 mb-4 p-2 inline-block rounded hover:bg-blue-900 border-gray-800 border-2 cursor-pointer text-blue-100" style=" text-shadow: 1px 1px #222;"> Join the Guild   </router-link> 
+            <router-link to="/members"  class="select-none no-underline bg-teal-700 mb-4 p-2 inline-block rounded hover:bg-blue-900 border-gray-800 border-2 cursor-pointer text-blue-100" style=" text-shadow: 1px 1px #222;">View Members List  </router-link> 
+        </div>
+
+        <div>
+            <router-link to="/stake"  class="select-none no-underline bg-teal-700 mb-4 p-2 inline-block rounded hover:bg-blue-900 border-gray-800 border-2 cursor-pointer text-blue-100" style=" text-shadow: 1px 1px #222;">Stake 0xBTC to Earn  </router-link> 
         </div>
 
             <div>
-            <a href="https://snapshot.org/#/0xbtcvault.eth" target="_blank"  class="select-none no-underline bg-blue-700 mb-16 p-2 inline-block rounded hover:bg-blue-900 border-gray-800 border-2 cursor-pointer text-blue-100" style=" text-shadow: 1px 1px #222;">Vote on Snapshot.org </a> 
+            <a href="https://snapshot.org/#/0xbtcvault.eth" target="_blank"  class="select-none no-underline bg-gray-700 mb-16 p-2 inline-block rounded hover:bg-blue-900 border-gray-800 border-2 cursor-pointer text-blue-100" style=" text-shadow: 1px 1px #222;">Vote on Snapshot.org </a> 
         </div>
 
  
@@ -52,7 +46,7 @@
    </div>
 
 
-    <div class="section  text-white  border-b-2 border-black " style="background:#222;">
+    <div class="section  text-white  border-b-2 border-black bg-gray-800 " >
      <div class="w-container  ">
 
          
@@ -70,7 +64,7 @@
                 <div class="text-lg text-center my-16 hidden "> TLDR: This is a funnel for donations from community-driven dapps. </div>
 
 
-                <p class="text-gray-500 bg-gray-800 p-4 mt-8"> <img src="@/assets/images/information.png" width="20" class="inline"/> Smart contracts that pay fees into the Guild contract, during execution flow, are more likely to be promoted, supported, and used by the community. </p>
+                <p class="text-gray-500 bg-neutral-800 p-4 mt-8"> <img src="@/assets/images/information.png" width="20" class="inline"/> Smart contracts that pay fees into the Guild contract [during execution flow] are more likely to be promoted, supported, and used by the community. </p>
 
          </div>
 
@@ -82,26 +76,20 @@
    </div>
 
 
+ 
 
-    
-  <Footer/>
-
-</div>
+</PrimaryLayout>
 </template>
 
 
 <script>
 
 
-
-import Web3Plug from '../js/web3-plug.js'  
-
+ 
+import PrimaryLayout from './PrimaryLayout.vue'
  
 import FrontPageMedia from './components/FrontPageMedia.vue';
- 
-import Navbar from './components/Navbar.vue';
- 
-import Footer from './components/Footer.vue';
+  
 import TabsBar from './components/TabsBar.vue';
   
 import StarflaskAPIHelper from '../js/starflask-api-helper.js';
@@ -111,10 +99,10 @@ import FrontendHelper from '../js/frontend-helper.js';
 export default {
   name: 'Home',
   props: [],
-  components: {Navbar, Footer, TabsBar, FrontPageMedia },
+  components: {  TabsBar, FrontPageMedia, PrimaryLayout },
   data() {
     return {
-      web3Plug: new Web3Plug() , 
+     
       activePanelId: null, 
        
 
@@ -124,22 +112,7 @@ export default {
 
   created(){
 
- 
-    this.web3Plug.getPlugEventEmitter().on('stateChanged', function(connectionState) {
-        console.log('stateChanged',connectionState);
-         
-        this.activeAccountAddress = connectionState.activeAccountAddress
-        this.activeNetworkId = connectionState.activeNetworkId 
-         
-      }.bind(this));
-   this.web3Plug.getPlugEventEmitter().on('error', function(errormessage) {
-        console.error('error',errormessage);
-         
-        this.web3error = errormessage
-       
-      }.bind(this));
-
-      this.web3Plug.reconnectWeb()
+  
    
        
 
