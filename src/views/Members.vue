@@ -85,6 +85,9 @@ import StarflaskAPIHelper from '../js/starflask-api-helper.js'
 
 const AccountNamesLookup = require('../config/accountNamesLookup.json')
 
+
+const apiRootUrl = "https://services.0xbtc.io/"
+
 export default {
   name: 'Members',
   props: [],
@@ -139,7 +142,7 @@ export default {
   methods: {
           async fetchGuildBalances(){
 
-            let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+            let apiURI = `${apiRootUrl}/api/v1/testapikey`
             let inputData = {requestType: 'ERC20_balance_by_owner', input: { account:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
             console.log('results',results)
@@ -162,7 +165,7 @@ export default {
           },
            async fetchReserveBalances(){
 
-            let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+            let apiURI = `${apiRootUrl}/api/v1/testapikey`
             let inputData = {requestType: 'ERC20_balance_by_token', input: { token:'0x657223e3fdf539d92c40664db340097d5d6bd9f5' } } 
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
             console.log('ERC20_balance_by_token results',results)
@@ -214,7 +217,7 @@ export default {
 
           async fetchERC20TransferredNet(){
 
-            let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+             let apiURI = `${apiRootUrl}/api/v1/testapikey`
             let inputData = {requestType: 'ERC20_transferred_to', input: { to:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
             let transferredToResults = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
 
@@ -263,7 +266,7 @@ export default {
 
             async fetchDonations(){
 
-            /*let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+            /* let apiURI = `${apiRootUrl}/api/v1/testapikey`
             let inputData = {requestType: 'ERC20_transferred_to', input: { to:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
             console.log('results',results)*/
