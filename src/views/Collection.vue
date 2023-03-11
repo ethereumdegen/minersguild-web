@@ -75,6 +75,9 @@ import MathHelper from '../js/math-helper.js'
 import StarflaskAPIHelper from '../js/starflask-api-helper.js'
 
 
+
+const apiRootUrl = "https://services.0xbtc.io/"
+
 const artworkLookupTable= {
 
   "0x6c10511DdEA5f3ED38A0163224198e37b81525bC": {
@@ -135,7 +138,7 @@ export default {
   methods: {
           async fetchCollectedWorks(){
 
-            let apiURI = 'https://api.starflask.com/api/v1/testapikey'
+             let apiURI = `${apiRootUrl}/api/v1/testapikey`
             let inputData = {requestType: 'ERC721_balance_by_owner', input: { publicAddress:this.vaultWalletAddress } } 
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
            
