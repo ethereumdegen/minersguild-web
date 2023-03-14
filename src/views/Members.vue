@@ -86,7 +86,7 @@ import StarflaskAPIHelper from '../js/starflask-api-helper.js'
 const AccountNamesLookup = require('../config/accountNamesLookup.json')
 
 
-const apiRootUrl = "https://services.0xbtc.io/"
+const apiRootUrl = "https://services.0xbtc.io:8443"
 
 export default {
   name: 'Members',
@@ -142,12 +142,13 @@ export default {
   methods: {
           async fetchGuildBalances(){
 
-            let apiURI = `${apiRootUrl}/api/v1/testapikey`
-            let inputData = {requestType: 'ERC20_balance_by_owner', input: { account:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
+            let apiURI = `${apiRootUrl}/v1/erc20_balance_by_owner`
+         
+            let inputData =  { publicAddress:'0x167152a46e8616d4a6892a6afd8e52f060151c70' }  
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
             console.log('results',results)
             
-            let balances = results.output 
+            let balances = results.data 
 
 
             this.guildBalances = {}
@@ -165,12 +166,14 @@ export default {
           },
            async fetchReserveBalances(){
 
-            let apiURI = `${apiRootUrl}/api/v1/testapikey`
-            let inputData = {requestType: 'ERC20_balance_by_token', input: { token:'0x657223e3fdf539d92c40664db340097d5d6bd9f5' } } 
+
+            let apiURI = `${apiRootUrl}/v1/erc20_balance_by_token`
+          
+            let inputData = { contractAddress:'0x657223e3fdf539d92c40664db340097d5d6bd9f5' }   
             let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
             console.log('ERC20_balance_by_token results',results)
             
-            let balances = results.output 
+            let balances = results.data 
 
             balances.sort((a,b) => {return b.amount - a.amount})
 
@@ -217,23 +220,27 @@ export default {
 
           async fetchERC20TransferredNet(){
 
-             let apiURI = `${apiRootUrl}/api/v1/testapikey`
-            let inputData = {requestType: 'ERC20_transferred_to', input: { to:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
-            let transferredToResults = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
-
-            inputData = {requestType: 'ERC20_transferred_from', input: { from:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
-            let transferredFromResults = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
+            const guildContractAddress = "0x167152A46E8616D4a6892A6AfD8E52F060151C70"
 
             let transferredToArray = {}
             let transferredFromArray = {}
             let transferredNetArray = {}
 
-            for(let result of transferredToResults.output){
+            let apiURITo = `${apiRootUrl}/v1/erc20_transferred_to`
+            let inputDataTo = { to: guildContractAddress } 
+            let transferredToResults = await StarflaskAPIHelper.resolveStarflaskQuery(apiURITo ,  inputDataTo   )
+
+            let apiURIFrom = `${apiRootUrl}/v1/erc20_transferred_from`
+            let inputDataFrom = {  from: guildContractAddress } 
+            let transferredFromResults = await StarflaskAPIHelper.resolveStarflaskQuery(apiURIFrom ,  inputDataFrom   )
+
+
+            for(let result of transferredToResults.data){
               let address = result.from
               transferredToArray[address] = result 
             }
 
-            for(let result of transferredFromResults.output){
+            for(let result of transferredFromResults.data){
               let address = result.to
               transferredFromArray[address] = result 
             }
@@ -266,13 +273,9 @@ export default {
 
             async fetchDonations(){
 
-            /* let apiURI = `${apiRootUrl}/api/v1/testapikey`
-            let inputData = {requestType: 'ERC20_transferred_to', input: { to:'0x167152a46e8616d4a6892a6afd8e52f060151c70' } } 
-            let results = await StarflaskAPIHelper.resolveStarflaskQuery(apiURI ,  inputData   )
-            console.log('results',results)*/
+         
 
             let results = await this.fetchERC20TransferredNet()
-            console.log('results',results)
             
 
             let _0xBTCAddress = '0xb6ed7644c69416d67b522e20bc294a9a9b405b31'.toLowerCase()
